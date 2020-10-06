@@ -30,9 +30,9 @@ const noOp = function () {};
 function aliasOptions (options, aliases, ...omit) {
   const keys = Object.keys(options);
   return keys.reduce((result, key) => {
-    const alias = aliases[ key ] || key;
+    const alias = aliases[key] || key;
     if (omit.indexOf(key) < 0) {
-      result[ alias ] = options[ key ];
+      result[alias] = options[key];
     }
     return result;
   }, {});
@@ -48,13 +48,21 @@ function define (channel, options, subscriber, connectionName) {
   }, 'subscribe', 'limit', 'noBatch', 'unique');
   topLog.info("Declaring queue '%s' on connection '%s' with the options: %s",
     options.uniqueName, connectionName, JSON.stringify(options));
-  return channel.assertQueue(options.uniqueName, valid)
-    .then(function (q) {
-      if (options.limit) {
-        channel.prefetch(options.limit);
-      }
-      return q;
-    });
+
+  let queuePromise;
+
+  if (options.passive) {
+    queuePromise = channel.checkQueue(options.uniqueName);
+  } else {
+    queuePromise = channel.assertQueue(options.uniqueName, valid);
+  }
+
+  return queuePromise.then(function (q) {
+    if (options.limit) {
+      channel.prefetch(options.limit);
+    }
+    return q;
+  });
 }
 
 function finalize (channel, messages) {
@@ -124,7 +132,7 @@ function getReply (channel, serializers, raw, replyQueue, connectionName) {
     var defaultReplyType = raw.type + '.reply';
     var replyType = options ? (options.replyType || defaultReplyType) : defaultReplyType;
     var contentType = getContentType(reply, options);
-    var serializer = serializers[ contentType ];
+    var serializer = serializers[contentType];
     if (!serializer) {
       var message = format('Failed to publish message with contentType %s - no serializer defined', contentType);
       log.error(message);
@@ -154,7 +162,7 @@ function getReply (channel, serializers, raw, replyQueue, connectionName) {
         replyTo,
         connectionName,
         publishOptions.type);
-      if (raw.properties.headers && raw.properties.headers[ 'direct-reply-to' ]) {
+      if (raw.properties.headers && raw.properties.headers['direct-reply-to']) {
         return channel.publish(
           '',
           replyTo,
@@ -353,13 +361,13 @@ function subscribe (channelName, channel, topology, serializers, messages, optio
       options.exclusive = true;
     }
     raw.queue = channelName;
-    var parts = [ options.name.replace(/[.]/g, '-') ];
+    var parts = [options.name.replace(/[.]/g, '-')];
     if (raw.type) {
       parts.push(raw.type);
     }
     var topic = parts.join('.');
     var contentType = raw.properties.contentType || 'application/octet-stream';
-    var serializer = serializers[ contentType ];
+    var serializer = serializers[contentType];
     const track = () => {
       if (shouldAck && shouldBatch) {
         messages.addMessage(ops);
@@ -453,7 +461,7 @@ function unsubscribe (channel, options) {
 }
 
 module.exports = function (options, topology, serializers) {
-  var channelName = [ 'queue', options.uniqueName ].join(':');
+  var channelName = ['queue', options.uniqueName].join(':');
   return topology.connection.getChannel(channelName, false, 'queue channel for ' + options.name)
     .then(function (channel) {
       var messages = new AckBatch(options.name, topology.connection.name, resolveTags(channel, options.name, topology.connection.name));

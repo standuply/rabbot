@@ -2,9 +2,17 @@ require('../setup');
 const rabbit = require('../../src/index.js');
 const config = require('./configuration');
 
+function stallLongEnoughToARegisterMessages () {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, 500);
+  });
+}
+
 describe('No Reply Queue (replyQueue: false)', function () {
-  var messagesToSend;
-  var harness;
+  let messagesToSend;
+  let harness;
 
   before(function (done) {
     harness = harnessFactory(rabbit, done, messagesToSend);
@@ -42,6 +50,7 @@ describe('No Reply Queue (replyQueue: false)', function () {
           routingKey: ''
         });
       }
+      return stallLongEnoughToARegisterMessages();
     });
   });
 

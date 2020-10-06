@@ -1,9 +1,92 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.0.0](https://github.com/Foo-Foo-MQ/foo-foo-mq/compare/v4.0.4...v5.0.0) (2020-08-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* **package.json:** node 8 is not lts, no longer supported
+
+### Bug Fixes
+
+* **package.json:** add node and 14 to ci steps, update engines to support node 14 ([a7f7c05](https://github.com/Foo-Foo-MQ/foo-foo-mq/commit/a7f7c055d5d970d5c66cb1a3966c42f991a2fe1b))
+* **package.json:** update node-monolouge to 1.0.0 ([0d178e6](https://github.com/Foo-Foo-MQ/foo-foo-mq/commit/0d178e6efebb33e7304a7ea39dc864dfd3fbffc2))
+* **package.json:** update to amqplib 0.6.0 ([19d253c](https://github.com/Foo-Foo-MQ/foo-foo-mq/commit/19d253c02eb5290ca1cac236c12bfaa66550cc58))
+
+### [4.0.4](https://github.com/Foo-Foo-MQ/foo-foo-mq/compare/v4.0.3...v4.0.4) (2020-07-12)
+
+
+### Bug Fixes
+
+* **connection.js:** correct accessor for username and password ([f67da30](https://github.com/Foo-Foo-MQ/foo-foo-mq/commit/f67da30847c1958424f330ee2dc87c1afcbf1212)), closes [#14](https://github.com/Foo-Foo-MQ/foo-foo-mq/issues/14)
+
+### [4.0.3](https://github.com/Foo-Foo-MQ/foo-foo-mq/compare/v4.0.2...v4.0.3) (2020-06-26)
+
+### Warning
+
+This version `4.0.3` had an unintentional bug as a result of moving away from the deprecated url.parse to the URL class.
+As a result, only consumers that were passing in a `uri` with credentials for connection containing were being ignored, and were defaulting back to `guest:guest` for `username:password`.  
+
+Consumers providing separate keys for `user` and `pass` were not affected by this. This is fixed in `v4.0.4`
+
+### Bug Fixes
+
+* **package.json:** devDependency updates and publishing.md update ([9fed4be](https://github.com/Foo-Foo-MQ/foo-foo-mq/commit/9fed4be95b2289322d46f037a18d142e9da91b68))
+* **package.json:** update uuid package ([64a771b](https://github.com/Foo-Foo-MQ/foo-foo-mq/commit/64a771b3ffbba3a3d07fa85ec6fc56f1061a7aea))
+
+<a name="4.0.2"></a>
+## [4.0.2](https://github.com/Foo-Foo-MQ/foo-foo-mq/compare/v4.0.0...v4.0.2) (2020-05-02)
+
+
+### Bug Fixes
+
+* **amqp/connection.js:** map call wasn't returning values for caPaths ([feb76f6](https://github.com/Foo-Foo-MQ/foo-foo-mq/commit/feb76f6))
+
+
+
+<a name="4.0.1"></a>
+## [4.0.1](https://github.com/Foo-Foo-MQ/foo-foo-mq/compare/v4.0.0...v4.0.1) (2020-05-02)
+
+
+### Bug Fixes
+
+* **amqp/connection.js:** map call wasn't returning values for caPaths ([feb76f6](https://github.com/Foo-Foo-MQ/foo-foo-mq/commit/feb76f6))
+
+
+
+<a name="4.0.0"></a>
+# [4.0.0](https://github.com/zlintz/foo-foo-mq/compare/v3.0.0...v4.0.0) (2019-12-11)
+
+
+### Bug Fixes
+
+* **.travis.yml:** amqplib only works for {"node":">=0.8 <=12"} ([2090256](https://github.com/zlintz/foo-foo-mq/commit/2090256))
+* **noreplyqueue.spec.js:** change var to let and increase timout to match batch ack time ([3f77e4d](https://github.com/zlintz/foo-foo-mq/commit/3f77e4d))
+* **package.json:** correct engines to allow greater than eqaul to LTS versions of node ([4867af5](https://github.com/zlintz/foo-foo-mq/commit/4867af5))
+* **package.json:** dependency updates for npm audit ([33d162c](https://github.com/zlintz/foo-foo-mq/commit/33d162c))
+* **request.spec.js:** fix scatter-gather flaky test ([c1eb8f3](https://github.com/zlintz/foo-foo-mq/commit/c1eb8f3))
+* **wildcardtypes.spec.js:** fix flaky wildcard test ([63eee3d](https://github.com/zlintz/foo-foo-mq/commit/63eee3d)), closes [#4](https://github.com/zlintz/foo-foo-mq/issues/4)
+
+
+### Features
+
+* **package.json:** only support LTS node versions, >=10 ([5dd8e90](https://github.com/zlintz/foo-foo-mq/commit/5dd8e90))
+
+
+### BREAKING CHANGES
+
+* **package.json:** Node version >=10 now required
+
+
+
 <a name="2.1.0"></a>
-# [2.1.0](https://github.com/arobson/rabbot/compare/v1.1.0...v2.1.0) (2018-02-18)
+# [3.0.0](https://github.com/zlintz/foo-foo-mq)
+Initial take over of Rabbot with doc changes, matches 2.1.0 of rabbot 
+
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/zlintz/foo-foo-mq/compare/v1.1.0...v2.1.0) (2018-02-18)
 
 
 ### Bug Fixes
