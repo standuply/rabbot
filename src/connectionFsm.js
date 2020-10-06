@@ -1,4 +1,4 @@
-const Monologue = require('monologue.js');
+const Monologue = require('node-monologue');
 const machina = require('machina');
 const format = require('util').format;
 const log = require('./log.js')('rabbot.connection');
@@ -56,11 +56,11 @@ const Connection = function (options, connectionFn, channelFn) {
     },
 
     _getChannel: function (name, confirm, context) {
-      let channel = channels[ name ];
+      let channel = channels[name];
       if (!channel || /releas/.test(channel.state)) {
         return new Promise((resolve) => {
           channel = channelFn.create(connection, name, confirm);
-          channels[ name ] = channel;
+          channels[name] = channel;
           channel.on('acquired', () => {
             this._onChannel.bind(this, name, context);
             resolve(channel);
@@ -88,7 +88,7 @@ const Connection = function (options, connectionFn, channelFn) {
       const keys = Object.keys(channels);
       const reacquisitions = keys.map((channelName) =>
         new Promise((resolve) => {
-          const channel = channels[ channelName ];
+          const channel = channels[channelName];
           channel.once('acquired', function () {
             resolve(channel);
           });
