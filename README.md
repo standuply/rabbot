@@ -1,4 +1,4 @@
-# foo-foo-mq
+# @standuply/rabbot
 
 [![Build Status][travis-image]][travis-url]
 [![Coverage Status][coveralls-image]][coveralls-url]
