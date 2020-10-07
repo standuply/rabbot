@@ -130,6 +130,10 @@ var Factory = function (options, connection, topology, serializers, queueFn) {
         this.handle('closed', queue);
       }.bind(this))
       );
+      handlers.push(queue.channel.on('failed', function () {
+        this.handle('failed', queue);
+      }.bind(this))
+      );
       handlers.push(connection.on('unreachable', function (err) {
         err = err || new Error('Could not establish a connection to any known nodes.');
         this.handle('unreachable', queue);
@@ -471,6 +475,9 @@ var Factory = function (options, connection, topology, serializers, queueFn) {
         },
         released: function () {
           this._release(true);
+          this.transition('initializing');
+        },
+        failed: function () {
           this.transition('initializing');
         },
         subscribed: function () {
